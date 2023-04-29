@@ -19,7 +19,7 @@ public class Enigma extends JFrame implements ActionListener {
     private final JComboBox r1, r2, r3, w1, w2, w3;
     private final JFrame f;
     private final JLabel rl1,rl2,rl3, wl1, wl2,wl3, errorLabel, enigmaLabel, settingsLabel, inputLabel, outputLabel,
-                            rotor1Label,rotor2Label,rotor3Label, reflectorLabel;
+                            rotor1Label,rotor2Label,rotor3Label, reflectorLabel, plugErrorLabel;
     private JPanel protor1, protor2, protor3;
     private EnigmaImpl enigma;
     private JMenuBar menuBar;
@@ -56,8 +56,9 @@ public class Enigma extends JFrame implements ActionListener {
         JPanel pRotors = new JPanel();
         pRotors.setBounds(650,20,width/2,30);
         JPanel pSubmit = new JPanel();
-        pSubmit.setBounds(650,45,width/2,40);
+        pSubmit.setBounds(650,50,width/2,40);
 
+        // adding the labels for the rotor graphics
         JPanel pR1Label = new JPanel();
         pR1Label.setBounds(725,85,100,25);
         rotor1Label = new JLabel("Rotor 1");
@@ -156,18 +157,24 @@ public class Enigma extends JFrame implements ActionListener {
         plugInp = new JTextField(30);
         pPlugboard.add(plugLabel);
         pPlugboard.add(plugInp);
-        pPlugboard.setBounds(0,350,650,100);
+        pPlugboard.setBounds(0,350,650,50);
 
         JPanel pPlugApply = new JPanel();
         JButton pApply = new JButton("Apply");
         pPlugApply.add(pApply);
-        pPlugApply.setBounds(0,450,650,50);
+        pPlugApply.setBounds(0,425,650,50);
         pApply.addActionListener(this);
 
         JPanel pPlugSettings = new JPanel();
         settingsLabel = new JLabel("");
         pPlugSettings.add(settingsLabel);
-        pPlugSettings.setBounds(0,500,650,50);
+        pPlugSettings.setBounds(0,475,650,50);
+
+        JPanel pPlugError = new JPanel();
+        plugErrorLabel = new JLabel("");
+        plugErrorLabel.setForeground(Color.red);
+        pPlugError.add(plugErrorLabel);
+        pPlugError.setBounds(0,390,650,50);
 
         //panels for the text area labels
         JPanel pInputTextLabel = new JPanel();
@@ -214,6 +221,7 @@ public class Enigma extends JFrame implements ActionListener {
         f.add(pPlugHead);
         f.add(pPlugboard);
         f.add(pPlugApply);
+        f.add(pPlugError);
         f.add(pPlugSettings);
         f.add(pInputTextLabel);
         f.add(pOutputTextLabel);
@@ -237,13 +245,39 @@ public class Enigma extends JFrame implements ActionListener {
         resetLabels();
     }
 
+    // Applying the plugboard settings
     private void apply() {
         String inputText = plugInp.getText();
         char[] inpChar = inputText.toCharArray();
-        String plugboardSettings = enigma.plugboard.changeArray(inpChar);
-        settingsLabel.setText(plugboardSettings);
+        if (filterString(inputText)) {
+            String plugboardSettings = enigma.plugboard.changeArray(inpChar);
+            settingsLabel.setText(plugboardSettings);
+            plugErrorLabel.setText("");;
+        } else {
+            plugErrorLabel.setText("Invalid Plugboard input");
+        }
     }
 
+    // checking plugboard input string is valid
+    private boolean filterString(String input) {
+        if (input.length() > 20) {
+            return false;
+        }
+        char[] strArray = input.toCharArray();
+        for (int i=0; i<strArray.length; i++) {
+        if (!Character.isAlphabetic(strArray[i])) {
+                return false;
+            }
+            for (int j=i+1; j<strArray.length-i;j++) {
+                if(strArray[i] == strArray[j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // updating the graphics after the rotation of the machine, to mimic the rotor rotating in real life
     private void rotateGraphics() {
         rg1.rotateGraphic(enigma.rotors[0].getRotorPosition());
         rg2.rotateGraphic(enigma.rotors[1].getRotorPosition());
@@ -253,6 +287,7 @@ public class Enigma extends JFrame implements ActionListener {
         protor3 = rg3.getPanel();
     }
 
+    // encrypting a character and updating the GUI given an input from the keyboard
     private void keyboardPressed(String pressed) {
         resetLabels();
         inputText.append(pressed);
@@ -266,6 +301,7 @@ public class Enigma extends JFrame implements ActionListener {
         lightLabels(encChar);
     }
 
+    // Performing the action following any button being pressed in the interface
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand().equalsIgnoreCase("Submit")) {
             if (r1.getSelectedIndex()==r2.getSelectedIndex() || r1.getSelectedIndex()==r3.getSelectedIndex() ||
