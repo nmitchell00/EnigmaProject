@@ -16,7 +16,7 @@ public class RotorImpl implements Rotor {
     //initialising the rotor with the forward and reverse mappings
     public RotorImpl (char[] forwardMapping, Position turn) {
         turnover = turn;
-        setPlugBoard(forwardMapping);
+        setMapping(forwardMapping);
     }
 
     public void setRotorPosition(Position pos) {
@@ -57,7 +57,7 @@ public class RotorImpl implements Rotor {
         return Position.values()[finalPosition];
     }
 
-    public void setPlugBoard(char[] forwardMapping) {
+    public void setMapping (char[] forwardMapping) {
         forward = new Position[forwardMapping.length];
         reverse = new Position[forwardMapping.length];
         Position to, from;
@@ -90,9 +90,7 @@ public class RotorImpl implements Rotor {
             newMapping[posInp2.ordinal()] = input1;
             allPlugs += "[" + input1 + input2 + "] ";
         }
-        setPlugBoard(newMapping);
-        System.out.println(forward);
-        System.out.println(reverse);
+        setMapping(newMapping);
         return allPlugs;
     }
 

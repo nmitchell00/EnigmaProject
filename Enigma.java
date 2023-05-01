@@ -265,10 +265,10 @@ public class Enigma extends JFrame implements ActionListener {
         }
         char[] strArray = input.toCharArray();
         for (int i=0; i<strArray.length; i++) {
-        if (!Character.isAlphabetic(strArray[i])) {
+            if (!Character.isAlphabetic(strArray[i])) {
                 return false;
             }
-            for (int j=i+1; j<strArray.length-i;j++) {
+            for (int j=i+1; j<strArray.length;j++) {
                 if(strArray[i] == strArray[j]) {
                     return false;
                 }
@@ -402,13 +402,13 @@ public class Enigma extends JFrame implements ActionListener {
         int p1 = enigma.rotors[0].getRotorPosition();
         int p2 = enigma.rotors[1].getRotorPosition();
         int p3 = enigma.rotors[2].getRotorPosition();
-        rg1.lightForwardLabel(Position.valueOf(Character.toString(encryption[1])).ordinal()+p1);
-        rg2.lightForwardLabel(Position.valueOf(Character.toString(encryption[2])).ordinal()+p2);
-        rg3.lightForwardLabel(Position.valueOf(Character.toString(encryption[3])).ordinal()+p3);
-        rg4.lightForwardLabel(Position.valueOf(Character.toString(encryption[4])).ordinal());
-        rg3.lightBackwardLabel(Position.valueOf(Character.toString(encryption[5])).ordinal()+p3);
-        rg2.lightBackwardLabel(Position.valueOf(Character.toString(encryption[6])).ordinal()+p2);
-        rg1.lightBackwardLabel(Position.valueOf(Character.toString(encryption[7])).ordinal()+p1);
+        rg1.lightForwardLabel(Position.valueOf(Character.toString(encryption[2])).ordinal()+p1);
+        rg2.lightForwardLabel(Position.valueOf(Character.toString(encryption[3])).ordinal()+p2);
+        rg3.lightForwardLabel(Position.valueOf(Character.toString(encryption[4])).ordinal()+p3);
+        rg4.lightForwardLabel(Position.valueOf(Character.toString(encryption[5])).ordinal());
+        rg3.lightBackwardLabel(Position.valueOf(Character.toString(encryption[6])).ordinal()+p3);
+        rg2.lightBackwardLabel(Position.valueOf(Character.toString(encryption[7])).ordinal()+p2);
+        rg1.lightBackwardLabel(Position.valueOf(Character.toString(encryption[8])).ordinal()+p1);
     }
 
     //Checking how long the input is to add a space as per the enigma machine
