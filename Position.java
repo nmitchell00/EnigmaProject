@@ -5,6 +5,10 @@ Created on Tue Jan  3 14:25:24 2023
 **/
 package com.enigma;
 
+/**
+ * Enum declaring the alphabet
+ */
+
 public enum Position {
     A,
     B,

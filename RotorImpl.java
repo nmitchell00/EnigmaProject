@@ -25,7 +25,11 @@ public class RotorImpl implements Rotor {
     }
 
     public void setRingPosition(Position pos) { ringPosition = pos; }
-    
+
+    /**
+     * Rotating the rotor forward one position
+     * @return boolean to state whether next rotor should also turn
+     */
     public boolean rotate() {
         int index = rotorPosition.ordinal();
         int nextIndex = (index+1)%ENUM_LENGTH;
@@ -37,6 +41,11 @@ public class RotorImpl implements Rotor {
         }
     }
 
+    /**
+     * the process of encrypting a character using the 'forward' mapping
+     * @param letter
+     * @return Position for encryption sequence
+     */
     public Position encryptForward(Position letter) {
         int rotorIndex = rotorPosition.ordinal();
         int characterIndex = letter.ordinal();
@@ -58,6 +67,11 @@ public class RotorImpl implements Rotor {
         }
     }
 
+    /**
+     * the process of encrypting a character using the 'forward' mapping
+     * @param letter
+     * @return Position for encryption sequence
+     */
     public Position encryptReverse(Position letter) {
         int ringIndex = ringPosition.ordinal();
         int rotorIndex = rotorPosition.ordinal();
@@ -77,6 +91,10 @@ public class RotorImpl implements Rotor {
         return Position.values()[finalPosition];
     }
 
+    /**
+     * changing the mapping of the character (only applicable for the plugboard)
+     * @param forwardMapping
+     */
     public void setMapping (char[] forwardMapping) {
         forward = new Position[forwardMapping.length];
         reverse = new Position[forwardMapping.length];
@@ -91,7 +109,11 @@ public class RotorImpl implements Rotor {
         }
     }
 
-    //Changing the plugboard array given the new input changes
+    /**
+     * Changing the plugboard array given the new input changes
+     * @param plugSettings
+     * @return String of the changed array
+     */
     public String changeArray(char[] plugSettings) {
         String allPlugs = "";
         char[] newMapping = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};

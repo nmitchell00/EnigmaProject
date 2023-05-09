@@ -23,6 +23,15 @@ public class EnigmaImpl {
         plugboard = new RotorImpl((plugArray), null);
     }
 
+    /**
+     * Creating all of the rotors with the mappings given
+     * @param r1
+     * @param r2
+     * @param r3
+     * @param r4
+     * @param r5
+     * @return the set of created rotors
+     */
     private Rotor[] createRotors(char[] r1, char[] r2, char[] r3, char[] r4, char[] r5) {
         final Rotor[] rotors = new Rotor[6];
         rotors[0] = new RotorImpl(r1, Position.R);
@@ -33,6 +42,12 @@ public class EnigmaImpl {
         return rotors;
     }
 
+    /**
+     * Encrypting a given string through all the components
+     * calls the component encrypt functions individually
+     * @param message - allows for a string if input is changed in the future
+     * @return the new encrypted string
+     */
     public String encrypt(final String message) {
         final char[] input = message.toCharArray();
         String toReturn = "";
@@ -61,6 +76,10 @@ public class EnigmaImpl {
         return toReturn;
     }
 
+    /**
+     * Calling the rotors to be advanced
+     * calls other rotors to be advanced if previous rotor reaches turn point
+     */
     private void advanceRotors() {
         for (Rotor rotor: rotors) {
             if (!rotor.rotate()) {
@@ -69,6 +88,10 @@ public class EnigmaImpl {
         }
     }
 
+    /**
+     * fetching all the rotor positions
+     * @return
+     */
     public int[] getRotorPositions() {
         final int[] positions = new int[3];
         for (int index = 0; index<3; index++) {
@@ -77,12 +100,20 @@ public class EnigmaImpl {
         return positions;
     }
 
+    /**
+     * setting all the rotor
+     * @param selection
+     */
     public void setRotors(final int[] selection) {
         for (int i = 0; i<selection.length; i++) {
             rotors[i] = allRotors[selection[i]];
         }
     }
 
+    /**
+     * setting all the rotor positions
+     * @param positions
+     */
     public void setRotorPositions(final int[] positions) {
         for (int i=0; i<positions.length; i++) {
             Position p = Position.values()[positions[i]];
@@ -90,6 +121,10 @@ public class EnigmaImpl {
         }
     }
 
+    /**
+     * setting all the ring positions
+     * @param rings
+     */
     public void setRingPositions(final int[] rings) {
         for (int i=0; i<rings.length; i++) {
             Position p = Position.values()[rings[i]];
