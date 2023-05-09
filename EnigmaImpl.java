@@ -13,9 +13,9 @@ public class EnigmaImpl {
         char[] r4array = {'E','S','O','V','P','Z','J','A','Y','Q','U','I','R','H','X','L','N','F','T','G','K','D','C','M','W','B'};
         char[] r5array = {'V','Z','B','R','G','I','T','Y','U','P','S','D','N','H','L','X','A','W','M','J','Q','O','F','E','C','K'};
         allRotors = createRotors(r1array,r2array,r3array,r4array,r5array);
-        rotors[0] = allRotors[0];
+        rotors[0] = allRotors[2];
         rotors[1] = allRotors[1];
-        rotors[2] = allRotors[2];
+        rotors[2] = allRotors[0];
 
         char[] reflectorArray  = {'Y','R','U','H','Q','S','L','D','P','X','N','G','O','K','M','I','E','B','F','Z','C','W','V','J','A','T'};
         reflector = new RotorImpl((reflectorArray), null);
@@ -87,6 +87,13 @@ public class EnigmaImpl {
         for (int i=0; i<positions.length; i++) {
             Position p = Position.values()[positions[i]];
             rotors[i].setRotorPosition(p);
+        }
+    }
+
+    public void setRingPositions(final int[] rings) {
+        for (int i=0; i<rings.length; i++) {
+            Position p = Position.values()[rings[i]];
+            rotors[i].setRingPosition(p);
         }
     }
 

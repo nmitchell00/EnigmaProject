@@ -16,10 +16,10 @@ public class Enigma extends JFrame implements ActionListener {
     private final String[] m3rotors = {"I", "II", "III", "IV", "V"};
     private final String[] alphabet = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
     private int letterCount = 0;
-    private final JComboBox r1, r2, r3, w1, w2, w3;
+    private final JComboBox r1, r2, r3, w1, w2, w3, ring1, ring2, ring3;
     private final JFrame f;
-    private final JLabel rl1,rl2,rl3, wl1, wl2,wl3, errorLabel, enigmaLabel, settingsLabel, inputLabel, outputLabel,
-                            rotor1Label,rotor2Label,rotor3Label, reflectorLabel, plugErrorLabel;
+    private final JLabel rl1,rl2,rl3, wl1, wl2,wl3, ringl1, ringl2, ringl3,errorLabel, enigmaLabel, settingsLabel,
+                            inputLabel,outputLabel,rotor1Label,rotor2Label,rotor3Label, reflectorLabel, plugErrorLabel;
     private JPanel protor1, protor2, protor3;
     private EnigmaImpl enigma;
     private JMenuBar menuBar;
@@ -55,40 +55,46 @@ public class Enigma extends JFrame implements ActionListener {
         versionP.setBounds(650,0,width/2,25);
         JPanel pRotors = new JPanel();
         pRotors.setBounds(650,20,width/2,30);
+        JPanel pRing1 = new JPanel();
+        pRing1.setBounds(650,50,width/6,30);
+        JPanel pRing2 = new JPanel();
+        pRing2.setBounds(650+width/6,50,width/6,30);
+        JPanel pRing3 = new JPanel();
+        pRing3.setBounds(650+width/3,50,width/6,30);
         JPanel pSubmit = new JPanel();
-        pSubmit.setBounds(650,50,width/2,40);
+        pSubmit.setBounds(650,80,width/2,30);
 
         // adding the labels for the rotor graphics
         JPanel pR1Label = new JPanel();
-        pR1Label.setBounds(725,85,100,25);
+        pR1Label.setBounds(725,105,100,25);
         rotor1Label = new JLabel("Rotor 1");
         pR1Label.add(rotor1Label);
         JPanel pR2Label = new JPanel();
-        pR2Label.setBounds(900,85,100,25);
+        pR2Label.setBounds(900,105,100,25);
         rotor2Label = new JLabel("Rotor 2");
         pR2Label.add(rotor2Label);
         JPanel pR3Label = new JPanel();
-        pR3Label.setBounds(1075,85,100,25);
+        pR3Label.setBounds(1075,105,100,25);
         rotor3Label = new JLabel("Rotor 3");
         pR3Label.add(rotor3Label);
         JPanel pReflectorLabel = new JPanel();
-        pReflectorLabel.setBounds(1250,85,100,25);
+        pReflectorLabel.setBounds(1250,105,100,25);
         reflectorLabel = new JLabel("Reflector");
         pReflectorLabel.add(reflectorLabel);
 
         //Defining the panels for the rotor interface
         rg1 = new RotorGraphics();
         protor1 = rg1.getPanel();
-        protor1.setBounds(725,110,100,650);
+        protor1.setBounds(725,130,100,650);
         rg2 = new RotorGraphics();
         protor2 = rg2.getPanel();
-        protor2.setBounds(900,110,100,650);
+        protor2.setBounds(900,130,100,650);
         rg3 = new RotorGraphics();
         protor3 = rg3.getPanel();
-        protor3.setBounds(1075,110,100,650);
+        protor3.setBounds(1075,130,100,650);
         rg4 = new RotorGraphics();
         JPanel pReflector = rg4.getPanel();
-        pReflector.setBounds(1250,110,100,650);
+        pReflector.setBounds(1250,130,100,650);
 
 
         enigmaLabel = new JLabel("Version: Enigma 1");
@@ -96,11 +102,11 @@ public class Enigma extends JFrame implements ActionListener {
 
         //creating the drop lists for rotor and rotor wheel selection
         r1 = new JComboBox(e1rotors);
-        r1.setSelectedIndex(0);
+        r1.setSelectedIndex(2);
         r2 = new JComboBox(e1rotors);
         r2.setSelectedIndex(1);
         r3 = new JComboBox(e1rotors);
-        r3.setSelectedIndex(2);
+        r3.setSelectedIndex(0);
         rl1 = new JLabel("Rotor:");
         rl2 = new JLabel("Rotor:");
         rl3 = new JLabel("Rotor:");
@@ -114,6 +120,13 @@ public class Enigma extends JFrame implements ActionListener {
         errorLabel = new JLabel("");
         errorLabel.setForeground(Color.RED);
 
+        ring1 = new JComboBox(alphabet);
+        ring2 = new JComboBox(alphabet);
+        ring3 = new JComboBox(alphabet);
+        ringl1 = new JLabel("Ring:");
+        ringl2 = new JLabel("Ring:");
+        ringl3 = new JLabel("Ring:");
+
         pRotors.add(rl1);
         pRotors.add(r1);
         pRotors.add(wl1);
@@ -126,6 +139,13 @@ public class Enigma extends JFrame implements ActionListener {
         pRotors.add(r3);
         pRotors.add(wl3);
         pRotors.add(w3);
+
+        pRing1.add(ringl1);
+        pRing1.add(ring1);
+        pRing2.add(ringl2);
+        pRing2.add(ring2);
+        pRing3.add(ringl3);
+        pRing3.add(ring3);
 
         pSubmit.add(errorLabel);
         JButton submit = new JButton("Submit");
@@ -207,6 +227,9 @@ public class Enigma extends JFrame implements ActionListener {
         f.setJMenuBar(menuBar);
         f.add(versionP);
         f.add(pRotors);
+        f.add(pRing1);
+        f.add(pRing2);
+        f.add(pRing3);
         f.add(pSubmit);
         f.add(pR1Label);
         f.add(pR2Label);
@@ -312,6 +335,8 @@ public class Enigma extends JFrame implements ActionListener {
                 enigma.setRotors(rotorPositions);
                 int[] wheelPositions = {w1.getSelectedIndex(), w2.getSelectedIndex(), w3.getSelectedIndex()};
                 enigma.setRotorPositions(wheelPositions);
+                int[] ringPositions = {ring1.getSelectedIndex(),ring2.getSelectedIndex(),ring3.getSelectedIndex()};
+                enigma.setRingPositions(ringPositions);
                 rotateGraphics();
                 errorLabel.setText("");
             }
@@ -434,15 +459,15 @@ public class Enigma extends JFrame implements ActionListener {
     //Setting the combo boxes to their new values after rotation
     private void setComboBox() {
         int[] rotorPositions = enigma.getRotorPositions();
-        w1.setSelectedIndex(rotorPositions[0]);
+        w1.setSelectedIndex(rotorPositions[2]);
         w2.setSelectedIndex(rotorPositions[1]);
-        w3.setSelectedIndex(rotorPositions[2]);
+        w3.setSelectedIndex(rotorPositions[0]);
     }
 
     //Resetting the rotors to I, II, III
     private void resetRotors() {
-        r1.setSelectedIndex(0);
+        r1.setSelectedIndex(2);
         r2.setSelectedIndex(1);
-        r3.setSelectedIndex(2);
+        r3.setSelectedIndex(0);
     }
 }

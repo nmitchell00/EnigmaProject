@@ -10,6 +10,7 @@ public class RotorImpl implements Rotor {
     private Position [] forward;
     private Position [] reverse;
     private final Position turnover;
+    private Position ringPosition = Position.A;
     private Position rotorPosition = Position.A;
     private final int ENUM_LENGTH = Position.values().length;
 
@@ -22,6 +23,8 @@ public class RotorImpl implements Rotor {
     public void setRotorPosition(Position pos) {
         rotorPosition = pos;
     }
+
+    public void setRingPosition(Position pos) { ringPosition = pos; }
     
     public boolean rotate() {
         int index = rotorPosition.ordinal();
@@ -37,22 +40,39 @@ public class RotorImpl implements Rotor {
     public Position encryptForward(Position letter) {
         int rotorIndex = rotorPosition.ordinal();
         int characterIndex = letter.ordinal();
-        int totalIndex = (rotorIndex + characterIndex) % ENUM_LENGTH;
-        int firstEncPos = forward[totalIndex].ordinal();
-        if (firstEncPos-rotorIndex<0) {
-            return Position.values()[(firstEncPos-rotorIndex)+26];
+        int ringIndex = ringPosition.ordinal();
+        int totalIndex = (rotorIndex + characterIndex-ringIndex);
+        if (totalIndex<0) {
+            totalIndex = totalIndex+ENUM_LENGTH;
         } else {
-            return Position.values()[(firstEncPos-rotorIndex)];
+            totalIndex = totalIndex % ENUM_LENGTH;
+        }
+        int firstEncPos = forward[totalIndex].ordinal();
+        int finalPos = firstEncPos-rotorIndex+ringIndex;
+        if (finalPos<0) {
+            return Position.values()[firstEncPos-rotorIndex+ringIndex+ENUM_LENGTH];
+        } if (finalPos>25) {
+            return Position.values()[finalPos-26];
+        } else {
+            return Position.values()[finalPos];
         }
     }
 
     public Position encryptReverse(Position letter) {
+        int ringIndex = ringPosition.ordinal();
         int rotorIndex = rotorPosition.ordinal();
-        int characterIndex = (letter.ordinal() + rotorIndex)%26;
+        int characterIndex = letter.ordinal() - ringIndex + rotorIndex;
+        if (characterIndex<0) {
+            characterIndex = characterIndex + ENUM_LENGTH;
+        } else {
+            characterIndex = characterIndex % ENUM_LENGTH;
+        }
         int reverseIndex = reverse[characterIndex].ordinal();
-        int finalPosition =  (reverseIndex - rotorIndex);
+        int finalPosition =  (reverseIndex - rotorIndex + ringIndex);
         if (finalPosition < 0) {
             finalPosition += ENUM_LENGTH;
+        } if (finalPosition > 25) {
+            finalPosition = finalPosition % ENUM_LENGTH;
         }
         return Position.values()[finalPosition];
     }
